@@ -1,35 +1,24 @@
 import React from 'react';
+import './index.css';
+import Navbar from './Navbar'
+import HomePage from './HomePage';
+import Footer from './Footer';
+import ProductPage from './ProductPage';
+import RegisterPage from './RegisterPage';
+import {Route, Switch} from 'wouter';
 
 export default function App() {
+
+ 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
-          <a className="navbar-brand" href="#">E-Shop</a>
-          <button
-            className="navbar-toggler"
-            type="button"       
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Products</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">About</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Contact</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar/>
+      <Switch> 
+        <Route path="/" component={HomePage}></Route>
+        <Route path="/products" component={ProductPage}></Route>
+        <Route path="/register" component={RegisterPage}></Route>
+      </Switch>
+       <Footer/>
 		</>    
   );
 }
