@@ -1,5 +1,6 @@
 import React from "react";
 import {Formik, Field, Form} from 'formik';
+import * as Yup from 'yup';
 
 export default function RegisterPage() {
 
@@ -19,32 +20,47 @@ export default function RegisterPage() {
     console.log('Form values:', values);
     formikHelpers.setSubmitting(false);
   };
+
+  const formValidationSchema = Yup.object({
+    name: Yup.string().required('name is required'),
+    email: Yup.string().email('Invalid email').required("email is required"),
+    password: Yup.string().min(8, 'password must be contain 8 char').required('password is required'),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'passwords must match' ).required("confrim password is required"),
+    salutation: Yup.string().required('salutation is required'),
+    country: Yup.string().required('country is required')
+  });
   return (
     
       <div className="container mt-5">
         <h1 className="text-center">Register</h1>
 
-        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={formValidationSchema}>
           {(formik) => (
               <Form>
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">Name</label>
                 <Field type="text" id="name" className="form-control" name="name" />
+                {formik.errors.name && formik.touched.name ? <div className="text-danger">{formik.errors.name}</div> : null}
               </div>
     
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email</label>
                 <Field type="email" id="email" className="form-control" name="email"/>
+                {formik.errors.email && formik.touched.email ? <div className="text-danger">{formik.errors.email}</div> : null}
+
               </div>
     
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">Password</label>
                 <Field type="password" id="password" className="form-control" name="password"/>
+                {formik.errors.password && formik.touched.password ? <div className="text-danger">{formik.errors.password}</div> : null}
               </div>
     
               <div className="mb-3">
                 <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                 <Field type="password" id="confirmPassword" className="form-control" name="confirmPassword" />
+                {formik.errors.confirmPassword && formik.touched.confirmPassword ? <div className="text-danger">{formik.errors.confirmPassword}</div> : null}
+
               </div>
     
               <div className="mb-3">
@@ -65,6 +81,8 @@ export default function RegisterPage() {
                     <label htmlFor="mrs" className="form-check-label">Mrs</label>
                   </div>
                 </div>
+                {formik.errors.salutation && formik.touched.salutation ? <div className="text-danger">{formik.errors.salutation}</div> : null}
+
               </div>
     
               <div className="mb-3">
@@ -89,6 +107,8 @@ export default function RegisterPage() {
                   <option value="my">Malaysia</option>
                   <option value="th">Thailand</option>
                 </Field>
+                {formik.errors.country && formik.touched.country ? <div className="text-danger">{formik.errors.country}</div> : null}
+
               </div>
     
               <div className="mb-3">
