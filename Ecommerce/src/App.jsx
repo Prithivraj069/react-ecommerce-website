@@ -7,6 +7,7 @@ import ProductPage from './ProductPage';
 import RegisterPage from './RegisterPage';
 import {Route, Switch} from 'wouter';
 import { useFlashMessage } from './FlashMessageStore';
+import ShoppingCart from './ShoppingCart';
 
 export default function App() {
 const {getMessage, clearMessage} = useFlashMessage();
@@ -30,6 +31,7 @@ useEffect(()=> {
         <Route path="/" component={HomePage}></Route>
         <Route path="/products" component={ProductPage}></Route>
         <Route path="/register" component={RegisterPage}></Route>
+        <Route path="/cart" component={ShoppingCart}></Route>
       </Switch>
        <Footer/>
 		</>    

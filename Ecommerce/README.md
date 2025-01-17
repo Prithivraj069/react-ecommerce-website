@@ -10,7 +10,8 @@ Currently, two official plugins are available:
 
 npm install
 npm install wouter - for router 
-npm install yup - 
+npm install yup - form validation
 npm install formik - form
 npm install axios - async await
 npm install jotai - flash message
+npm install seamless-immutable - immutable state updates
