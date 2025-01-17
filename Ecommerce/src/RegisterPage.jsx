@@ -1,6 +1,7 @@
 import React from "react";
 import {Formik, Field, Form} from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios'
 
 export default function RegisterPage() {
 
@@ -16,9 +17,13 @@ export default function RegisterPage() {
 
 
   const handleSubmit = (values, formikHelpers) => {
-    // Here you would typically make an API call to register the user
-    console.log('Form values:', values);
+   try {
+
+   } catch (error) {
+
+   } finally {
     formikHelpers.setSubmitting(false);
+   }
   };
 
   const formValidationSchema = Yup.object({
