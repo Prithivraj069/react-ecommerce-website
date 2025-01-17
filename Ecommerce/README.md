@@ -10,6 +10,7 @@ Currently, two official plugins are available:
 
 npm install
 npm install wouter - for router 
-npm install yup
-npm install formik
-npm install axios
+npm install yup - 
+npm install formik - form
+npm install axios - async await
+npm install jotai - flash message

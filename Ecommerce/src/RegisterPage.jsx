@@ -1,9 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import {Formik, Field, Form} from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios'
+import axios from 'axios';
+import { useLocation } from "wouter";
+import { useFlashMessage } from "./FlashMessageStore";
 
 export default function RegisterPage() {
+  const [, setLocation] = useLocation();
+  const [showSuccess, setShowSuccess] = useState(false);
+
+
 
   const initialValues = {
     name: '',
@@ -15,14 +21,22 @@ export default function RegisterPage() {
     country: ''
   };
 
+  const {showMessage} = useFlashMessage();
 
-  const handleSubmit = (values, formikHelpers) => {
+  const handleSubmit = async (values, formikHelpers) => {
    try {
+    // const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
+    // console.log('Registeration successful:', response.data);
+    showMessage('Registration successful:', 'success');
 
    } catch (error) {
+    // console.log('Registeration failed:', error.response?.data || error.message);
+    showMessage('Registeration failed', 'error');
 
    } finally {
     formikHelpers.setSubmitting(false);
+    setLocation('/');
+    console.log(values)
    }
   };
 
