@@ -42,9 +42,31 @@ export const useCart = () => {
     })
   }
 
+  const modifyQuantity = (product_id, quantity) => {
+    setCart((currentCart) => {
+      const existingItemIndex = currentCart.findIndex(item => item.product_id === product_id);
+      if(existingItemIndex !== -1) {
+        if(quantity < 0) {
+          return currentCart.filter(item => item.product_id !== product_id);
+        } else {
+          return currentCart.setIn([existingItemIndex, 'quantity'], quantity);
+        }
+      }
+  })
+}
+
+const removeItemFromCart = (product_id) => {
+  setCart((currentCart)=> {
+    return currentCart.filter(item => item.product_id !== product_id);
+  });
+}
+
+
   return {
     cart,
     getCartTotal,
-    addToCart
+    addToCart,
+    modifyQuantity,
+    removeItemFromCart
   };
 };
