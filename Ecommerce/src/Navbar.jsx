@@ -36,13 +36,13 @@ export default function Navbar() {
                     <Link className={`nav-link ${location == '/cart' ? 'active' : ''}`} href="/cart">Cart</Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="#">About</a>
+                  <Link className={`nav-link ${location == '/profile' ? 'active' : ''}`} href="/profile">Profile</Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="#">Contact</a>
+                    <Link className={`nav-link ${location == '/userLogin' ? 'active' : ''}`} href="/userLogin">Login</Link>
                   </li>
                   <li className="nav-item">
-                    <Link className={`nav-link ${location == '/register' ? 'active' : ''}`} href="/register">SignUp</Link>
+                    <Link className={`nav-link ${location == '/register' ? 'active' : ''}`} href="/register">Register</Link>
                   </li>
                 </ul>
               </div>

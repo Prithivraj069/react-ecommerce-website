@@ -26,8 +26,13 @@ export default function ProductPage() {
 
   useEffect(()=>{
     const fetchData = async () => {
-      const response = await axios.get('featured.json');
-      setProducts(response.data);
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
+        setProducts(response.data);
+      } catch (e) {
+        console.log('Error fetching products:', e);
+      }
+     
     }
 
     fetchData();
