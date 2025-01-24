@@ -44,6 +44,11 @@ export default function Navbar() {
                   <li className="nav-item">
                     <Link className={`nav-link ${location == '/register' ? 'active' : ''}`} href="/register">Register</Link>
                   </li>
+                  {/* <li className="nav-item">
+                  <Link className={`nav-link ${location == '/profile' ? 'active' : ''}`} href="/profile">
+                  <img src="../images/profile.png" alt="profile" width="10" height="10"></img>
+                  </Link>
+                  </li> */}
                 </ul>
               </div>
             </div>

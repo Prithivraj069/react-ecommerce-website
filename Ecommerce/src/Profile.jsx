@@ -52,6 +52,7 @@ export default function Profile() {
 
             showMessage('Profile updated successfully!', 'success');
             actions.setSubmitting(false);
+            setLocation("/");
         } catch (error) {
             console.error('Error updating profile:', error);
             actions.setErrors({ submit: error.response?.data?.message || 'An error occurred' });
@@ -121,22 +122,24 @@ export default function Profile() {
                                     <option value="">Select Country</option>
                                     <option value="sg">Singapore</option>
                                     <option value="my">Malaysia</option>
-                                    <option value="in">Indonesia</option>
+                                    <option value="in">India</option>
                                     <option value="th">Thailand</option>
                                 </Field>
                                 <ErrorMessage name="country" component="div" className="text-danger" />
                             </div>
 
                             {formik.errors.submit && <div className="alert alert-danger">{formik.errors.submit}</div>}
-
+                            <div className="m-4">
                             <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>
                                 {formik.isSubmitting ? 'Updating...' : 'Update Profile'}
                             </button>
+
+                            <button className="btn btn-danger ms-4" onClick={handleDeleteAccount}>Delete Account</button>
+                            </div>
                         </Form>
                     );
                 }}
             </Formik>
-          <button class="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
         </div>
     )
 }
