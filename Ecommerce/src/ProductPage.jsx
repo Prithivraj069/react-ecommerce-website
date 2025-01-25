@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import ProductCard from "./ProductCard";
-import { useCart } from "./CardStore";
+import { useCart } from "./CartStore";
 import { useLocation } from "wouter";
 import { useFlashMessage } from "./FlashMessageStore";
 

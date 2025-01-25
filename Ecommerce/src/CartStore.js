@@ -1,25 +1,52 @@
 import { atom, useAtom } from 'jotai';
 import Immutable from 'seamless-immutable';
+import axios from 'axios';
+import { useEffect, useRef } from 'react';
+import {useJwt} from "./UserStore";
 
-// Define the initial state of the cart. We put in one piece of test data
-const initialCart = Immutable([
-// {
-//     "id": 1,
-//     "product_id": 1,
-//     "quantity": 10,
-//     "productName": "Organic Green Tea",
-//     "price": 12.99,
-//     "imageUrl": "https://picsum.photos/id/225/300/200",
-//     "description": "Premium organic green tea leaves, rich in antioxidants and offering a smooth, refreshing taste."
-//   }
-]);
+// Define the initial state of the cart.
+const initialCart = Immutable([]);
 
 // Create an atom for the cart
 export const cartAtom = atom(initialCart);
+export const cartLoadingAtom = atom(false);
 
 // Custom hook for cart operations
 export const useCart = () => {
   const [cart, setCart] = useAtom(cartAtom);
+  const [isLoading, setIsLoading] = useAtom(cartLoadingAtom);
+  const { getJwt } = useJwt();
+  const isInitialLoad = useRef(true);
+
+  useEffect(()=>{
+    const debounceTimeOut = setTimeout(()=> {
+      updateCart();
+    }, 500);
+    
+    return ()=> clearTimeout(debounceTimeOut);
+
+  }, [cart])
+
+  
+  const fetchCart = async () => {
+    const jwt = getJwt();
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`
+        }
+      });
+
+      setCart(Immutable(response.data));
+
+    } catch (e) {
+      console.error("Error fetching cart", e);
+
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const getCartTotal = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
@@ -61,12 +88,41 @@ const removeItemFromCart = (product_id) => {
   });
 }
 
+const updateCart = async ()=> {
+  const jwt = getJwt();
+  setIsLoading(true);
+
+  try {
+    const updatedCartItems = cart.map((item)=> ({
+      product_id: item.product_id,
+      quantity: item.quantity
+    }));
+
+    axios.put(`${import.meta.env.VITE_API_URL}/api/cart`,
+      {cartItems: updatedCartItems},
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`
+        }
+      }
+    )
+
+  } catch (e) {
+    console.error("Error updating cart", e);
+  } finally {
+    setIsLoading(false);
+  }
+}
+
 
   return {
     cart,
     getCartTotal,
     addToCart,
     modifyQuantity,
-    removeItemFromCart
+    removeItemFromCart,
+    fetchCart,
+    updateCart,
+    isLoading
   };
 };
