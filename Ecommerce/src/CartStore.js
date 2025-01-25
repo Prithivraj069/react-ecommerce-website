@@ -16,25 +16,19 @@ export const useCart = () => {
   const [cart, setCart] = useAtom(cartAtom);
   const [isLoading, setIsLoading] = useAtom(cartLoadingAtom);
   const { getJwt } = useJwt();
-  const isInitialLoad = useRef(true);
 
   useEffect(()=>{
-    const debounceTimeOut = setTimeout(()=> {
-      updateCart();
-    }, 500);
+    fetchCart();
+    }, []);
     
-    return ()=> clearTimeout(debounceTimeOut);
-
-  }, [cart])
-
   
   const fetchCart = async () => {
     const jwt = getJwt();
     setIsLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cart`, {
+      const response = await axios.get(import.meta.env.VITE_API_URL + '/api/cart', {
         headers: {
-          Authorization: `Bearer ${jwt}`
+          Authorization: 'Bearer ' + jwt
         }
       });
 
@@ -49,7 +43,13 @@ export const useCart = () => {
   }
 
   const getCartTotal = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    // return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    let total =0;
+    for(let c of cart) {
+      total += c.price * c.quantity;
+    }
+
+    return total.toFixed(2);
   };
 
    const addToCart = (product) => {
@@ -59,12 +59,15 @@ export const useCart = () => {
         if(existingItemIndex !== -1) {
             let newQuantity = cart[existingItemIndex].quantity + 1;
             const modifiedCart = currentCart.setIn([existingItemIndex, 'quantity'], newQuantity);
+            updateCart(modifiedCart);
             return modifiedCart;
         } else {
-            return currentCart.concat({
+            const modifiedCart = currentCart.concat({
                 ...product,
                 quantity: 1
             })
+            updateCart(modifiedCart);
+            return modifiedCart;
         }
     })
   }
@@ -72,33 +75,38 @@ export const useCart = () => {
   const modifyQuantity = (product_id, quantity) => {
     setCart((currentCart) => {
       const existingItemIndex = currentCart.findIndex(item => item.product_id === product_id);
-      if(existingItemIndex !== -1) {
-        if(quantity < 0) {
-          return currentCart.filter(item => item.product_id !== product_id);
-        } else {
-          return currentCart.setIn([existingItemIndex, 'quantity'], quantity);
-        }
+
+      if(quantity > 0) {
+        const modifiyCart = currentCart.setIn([existingItemIndex, "quantity"], quantity);
+        updateCart(modifiyCart);
+        return modifiyCart;
+      } else {
+        const modifiedCart = currentCart.filter(cartItem => cartItem.product_id !== product_id);
+        updateCart(modifiedCart);
+        return modifiedCart;
       }
   })
 }
 
 const removeItemFromCart = (product_id) => {
   setCart((currentCart)=> {
-    return currentCart.filter(item => item.product_id !== product_id);
+    const modifiedCart = currentCart.filter(item => item.product_id != product_id);
+    updateCart(modifiedCart);
+    return modifiedCart;
   });
 }
 
-const updateCart = async ()=> {
+const updateCart = async (updateCart)=> {
   const jwt = getJwt();
   setIsLoading(true);
 
   try {
-    const updatedCartItems = cart.map((item)=> ({
+    const updatedCartItems = updateCart.map((item)=> ({
       product_id: item.product_id,
       quantity: item.quantity
     }));
 
-    axios.put(`${import.meta.env.VITE_API_URL}/api/cart`,
+    axios.put(import.meta.env.VITE_API_URL +'/api/cart',
       {cartItems: updatedCartItems},
       {
         headers: {
@@ -120,9 +128,6 @@ const updateCart = async ()=> {
     getCartTotal,
     addToCart,
     modifyQuantity,
-    removeItemFromCart,
-    fetchCart,
-    updateCart,
-    isLoading
+    removeItemFromCart
   };
 };
