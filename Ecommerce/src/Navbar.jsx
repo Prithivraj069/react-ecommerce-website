@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import {Link, useLocation} from 'wouter';
+import profile from './images/profile-user.png';
+import brand from './images/brand.webp';
 
 
 export default function Navbar() {
@@ -15,7 +17,9 @@ export default function Navbar() {
         <>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container">
-              <a className="navbar-brand" href="#">QuickPicker Store</a>
+              <a className="navbar-brand" href="#">
+                <img src={brand} alt="brand logo" style={{height:'40px', width: '40px', borderRadius: '50%'}} className="me-2"></img>
+                QuickPicker</a>
               <button
                 className="navbar-toggler"
                 type="button"
@@ -44,11 +48,11 @@ export default function Navbar() {
                   <li className="nav-item">
                     <Link className={`nav-link ${location == '/register' ? 'active' : ''}`} href="/register">Register</Link>
                   </li>
-                  {/* <li className="nav-item">
+                  <li className="nav-item">
                   <Link className={`nav-link ${location == '/profile' ? 'active' : ''}`} href="/profile">
-                  <img src="../images/profile.png" alt="profile" width="10" height="10"></img>
+                  <img src={profile} alt="profile image" style={{height:'40px', width: '40px'}}></img>
                   </Link>
-                  </li> */}
+                    </li> 
                 </ul>
               </div>
             </div>

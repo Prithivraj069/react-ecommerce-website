@@ -134,7 +134,7 @@ export default function Profile() {
                                 {formik.isSubmitting ? 'Updating...' : 'Update Profile'}
                             </button>
 
-                            <button className="btn btn-danger ms-4" onClick={handleDeleteAccount}>Delete Account</button>
+                            <button type="submit" className="btn btn-danger ms-4" onClick={handleDeleteAccount}>Delete Account</button>
                             </div>
                         </Form>
                     );
