@@ -71,6 +71,19 @@ export default function Profile() {
         setLocation("/");
     }
 
+    // const handleLogout = async () => {
+    //     try {
+    //         await axios.post(import.meta.env.VITE_API_URL + '/api/users/logout', null, {
+    //             withCredentials: true
+    //         });
+    //         localStorage.removeItem('token');
+    //         setLocation('/');
+
+    //     } catch (e) {
+    //         console.log('Error during logout:', e);
+    //     }
+    // }
+
     return (
         <div className="container mt-5">
             <h2>Edit Profile</h2>
@@ -135,6 +148,8 @@ export default function Profile() {
                             </button>
 
                             <button type="submit" className="btn btn-danger ms-4" onClick={handleDeleteAccount}>Delete Account</button>
+                            {/* <button type="submit" className="btn btn-danger ms-4" onClick={handleLogout}>Logout</button> */}
+
                             </div>
                         </Form>
                     );
